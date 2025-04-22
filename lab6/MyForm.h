@@ -33,14 +33,12 @@ namespace lab6 {
 		OrderedTable<int, string>* ot;
 		PolynomialOrdTable<int>* pot;
 
+
 		AVLTree<int, string>* avlt;
 		PolynomialAVLTree<int>* pavlt;
 
 		HashTable<int, string>* ht;
 		PolynomialHashTable<int>* pht;
-		
-		// hht
-		// phht
 		
 		enum class EditMode
 		{
@@ -48,8 +46,7 @@ namespace lab6 {
 			UTableList,
 			OTable,
 			AVLT,
-			HTable,
-			HTableF2
+			HTable
 		};
 
 		enum class Type
@@ -221,24 +218,17 @@ namespace lab6 {
 				static_cast<System::Byte>(204)));
 			this->groupBox1->Location = System::Drawing::Point(12, 67);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(244, 190);
+			this->groupBox1->Size = System::Drawing::Size(244, 161);
 			this->groupBox1->TabIndex = 1;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Структура данных";
 			// 
 			// hash_tableF2_btn
 			// 
-			this->hash_tableF2_btn->AutoSize = true;
-			this->hash_tableF2_btn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->hash_tableF2_btn->Location = System::Drawing::Point(6, 151);
+			this->hash_tableF2_btn->Location = System::Drawing::Point(0, 0);
 			this->hash_tableF2_btn->Name = L"hash_tableF2_btn";
-			this->hash_tableF2_btn->Size = System::Drawing::Size(120, 20);
-			this->hash_tableF2_btn->TabIndex = 5;
-			this->hash_tableF2_btn->TabStop = true;
-			this->hash_tableF2_btn->Text = L"Hash-table (F2)";
-			this->hash_tableF2_btn->UseVisualStyleBackColor = true;
-			this->hash_tableF2_btn->CheckedChanged += gcnew System::EventHandler(this, &MyForm::hash_tableF2_btn_CheckedChanged);
+			this->hash_tableF2_btn->Size = System::Drawing::Size(104, 24);
+			this->hash_tableF2_btn->TabIndex = 0;
 			// 
 			// unordered_tableList_btn
 			// 
@@ -309,7 +299,7 @@ namespace lab6 {
 			this->groupBox2->Controls->Add(this->tooltip_label);
 			this->groupBox2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->groupBox2->Location = System::Drawing::Point(12, 263);
+			this->groupBox2->Location = System::Drawing::Point(12, 234);
 			this->groupBox2->Name = L"groupBox2";
 			this->groupBox2->Size = System::Drawing::Size(244, 249);
 			this->groupBox2->TabIndex = 2;
@@ -425,7 +415,7 @@ namespace lab6 {
 			this->tableView_listBox->ItemHeight = 16;
 			this->tableView_listBox->Location = System::Drawing::Point(262, 19);
 			this->tableView_listBox->Name = L"tableView_listBox";
-			this->tableView_listBox->Size = System::Drawing::Size(675, 628);
+			this->tableView_listBox->Size = System::Drawing::Size(675, 596);
 			this->tableView_listBox->TabIndex = 3;
 			// 
 			// groupBox3
@@ -441,7 +431,7 @@ namespace lab6 {
 			this->groupBox3->Controls->Add(this->label2);
 			this->groupBox3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->groupBox3->Location = System::Drawing::Point(12, 518);
+			this->groupBox3->Location = System::Drawing::Point(12, 489);
 			this->groupBox3->Name = L"groupBox3";
 			this->groupBox3->Size = System::Drawing::Size(244, 129);
 			this->groupBox3->TabIndex = 8;
@@ -586,7 +576,7 @@ namespace lab6 {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(949, 653);
+			this->ClientSize = System::Drawing::Size(949, 641);
 			this->Controls->Add(this->groupBox5);
 			this->Controls->Add(this->groupBox3);
 			this->Controls->Add(this->tableView_listBox);
@@ -636,9 +626,6 @@ namespace lab6 {
 	private: System::Void hash_table_btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 		SetMode(EditMode::HTable);
 	}
-	private: System::Void hash_tableF2_btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		SetMode(EditMode::HTableF2);
-	}
 
 	private: System::Void delete_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ str_key = key_field->Text;
@@ -663,9 +650,6 @@ namespace lab6 {
 					break;
 				case EditMode::HTable:
 					ht->Delete(int_key);
-					break;
-				case EditMode::HTableF2:
-					//
 					break;
 				default:
 					break;
@@ -697,9 +681,6 @@ namespace lab6 {
 					break;
 				case EditMode::HTable:
 					pht->Delete(int_key);
-					break;
-				case EditMode::HTableF2:
-					//
 					break;
 				default:
 					break;
@@ -743,9 +724,6 @@ namespace lab6 {
 				case EditMode::HTable:
 					ht->Insert(int_key, value);
 					break;
-				case EditMode::HTableF2:
-					//
-					break;
 				default:
 					break;
 				}
@@ -779,9 +757,6 @@ namespace lab6 {
 					break;
 				case EditMode::HTable:
 					pht->Insert(int_key, Polynomial(value));
-					break;
-				case EditMode::HTableF2:
-					//
 					break;
 				default:
 					break;
@@ -834,11 +809,6 @@ namespace lab6 {
 					tableView_listBox->Items->Add(msclr::interop::marshal_as<String^>(ht->GetRec(i)));
 				}
 				break;
-			case EditMode::HTableF2:
-				//
-				//
-				//
-				break;
 			default:
 				break;
 			}
@@ -872,9 +842,6 @@ namespace lab6 {
 				{
 					tableView_listBox->Items->Add(msclr::interop::marshal_as<String^>(pht->GetRec(i)));
 				}
-				break;
-			case EditMode::HTableF2:
-				//
 				break;
 			default:
 				break;
@@ -917,9 +884,6 @@ namespace lab6 {
 			break;
 		case EditMode::HTable:
 			pht->Calculate(*p);
-			break;
-		case EditMode::HTableF2:
-			//
 			break;
 		default:
 			break;
