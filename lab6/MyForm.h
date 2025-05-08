@@ -1,8 +1,11 @@
 #pragma once
+
 #include "Unordered_Table.h"
 #include "OrderedTable.h"
 #include "HashTable.h"
 #include "AVLTree.h"
+#include "HashTableF1.h"
+
 #include <msclr/marshal_cppstd.h>
 
 using namespace std;
@@ -37,6 +40,9 @@ namespace lab6 {
 		AVLTree<int, string>* avlt;
 		PolynomialAVLTree<int>* pavlt;
 
+		HashTableF1<int, string>* htf1;
+		PolynomialHashTableF1<int>* phtf1;
+
 		HashTable<int, string>* ht;
 		PolynomialHashTable<int>* pht;
 		
@@ -46,13 +52,14 @@ namespace lab6 {
 			UTableList,
 			OTable,
 			AVLT,
+			HTableF1,
 			HTable
 		};
 
 		enum class Type
 		{
-			String,
-			Polynomial
+			String_type,
+			Polynomial_type
 		};
 
 		EditMode mode;
@@ -66,8 +73,8 @@ namespace lab6 {
 		System::Windows::Forms::RadioButton^ hash_table_btn;
 		System::Windows::Forms::RadioButton^ avl_tree_btn;
 		System::Windows::Forms::RadioButton^ ordered_table_btn;
-		System::Windows::Forms::RadioButton^ hash_tableF2_btn;
-	
+		System::Windows::Forms::RadioButton^ hash_table_F1_btn;
+
 		System::Windows::Forms::GroupBox^ groupBox2;
 		System::Windows::Forms::Label^ label2;
 		System::Windows::Forms::Label^ tooltip_label;
@@ -94,6 +101,8 @@ namespace lab6 {
 		System::Windows::Forms::Label^ label5;
 		System::Windows::Forms::RadioButton^ type_polynomial;
 		System::Windows::Forms::RadioButton^ type_string;
+	    
+
 	private:
 		/// <summary>
 		/// Required designer variable.
@@ -121,15 +130,15 @@ namespace lab6 {
 			ht = new HashTable<int, string>();
 			pht = new PolynomialHashTable<int>();
 			
-			// hht
-			// hhtp
+			htf1 = new HashTableF1<int, string>();
+			phtf1 = new PolynomialHashTableF1<int>();
 			
 			p = new Polynomial_::Point(0, 0, 0);
 
 			mode = EditMode::UTable;
 			unordered_table_btn->Checked = true;
 			
-			type = Type::String;
+			type = Type::String_type;
 			type_string->Checked = true;
 			//
 			//TODO: Add the constructor code here
@@ -157,7 +166,7 @@ namespace lab6 {
 		{
 			this->unordered_table_btn = (gcnew System::Windows::Forms::RadioButton());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->hash_tableF2_btn = (gcnew System::Windows::Forms::RadioButton());
+			this->hash_table_F1_btn = (gcnew System::Windows::Forms::RadioButton());
 			this->unordered_tableList_btn = (gcnew System::Windows::Forms::RadioButton());
 			this->hash_table_btn = (gcnew System::Windows::Forms::RadioButton());
 			this->avl_tree_btn = (gcnew System::Windows::Forms::RadioButton());
@@ -208,7 +217,7 @@ namespace lab6 {
 			// 
 			// groupBox1
 			// 
-			this->groupBox1->Controls->Add(this->hash_tableF2_btn);
+			this->groupBox1->Controls->Add(this->hash_table_F1_btn);
 			this->groupBox1->Controls->Add(this->unordered_tableList_btn);
 			this->groupBox1->Controls->Add(this->hash_table_btn);
 			this->groupBox1->Controls->Add(this->avl_tree_btn);
@@ -223,12 +232,19 @@ namespace lab6 {
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Структура данных";
 			// 
-			// hash_tableF2_btn
+			// hash_table_F1_btn
 			// 
-			this->hash_tableF2_btn->Location = System::Drawing::Point(0, 0);
-			this->hash_tableF2_btn->Name = L"hash_tableF2_btn";
-			this->hash_tableF2_btn->Size = System::Drawing::Size(104, 24);
-			this->hash_tableF2_btn->TabIndex = 0;
+			this->hash_table_F1_btn->AutoSize = true;
+			this->hash_table_F1_btn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7.8F, System::Drawing::FontStyle::Regular,
+				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(204)));
+			this->hash_table_F1_btn->Location = System::Drawing::Point(115, 125);
+			this->hash_table_F1_btn->Name = L"hash_table_F1_btn";
+			this->hash_table_F1_btn->Size = System::Drawing::Size(112, 20);
+			this->hash_table_F1_btn->TabIndex = 5;
+			this->hash_table_F1_btn->TabStop = true;
+			this->hash_table_F1_btn->Text = L"Hash-table F1";
+			this->hash_table_F1_btn->UseVisualStyleBackColor = true;
+			this->hash_table_F1_btn->CheckedChanged += gcnew System::EventHandler(this, &MyForm::hash_table_F1_btn_CheckedChanged);
 			// 
 			// unordered_tableList_btn
 			// 
@@ -604,11 +620,11 @@ namespace lab6 {
 	}
 	
 	private: System::Void type_string_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		type = Type::String;
+		type = Type::String_type;
 		tableView_listBox->Items->Clear();
 	}
 	private: System::Void type_polynomial_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
-		type = Type::Polynomial;
+		type = Type::Polynomial_type;
 		tableView_listBox->Items->Clear();
 	}
 	private: System::Void unordered_table_btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -626,13 +642,15 @@ namespace lab6 {
 	private: System::Void hash_table_btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 		SetMode(EditMode::HTable);
 	}
-
+	private: System::Void hash_table_F1_btn_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+		SetMode(EditMode::HTableF1);
+	}
 	private: System::Void delete_button_Click(System::Object^ sender, System::EventArgs^ e) {
 		String^ str_key = key_field->Text;
 		int int_key;
 		switch (type)
 		{
-		case Type::String:
+		case Type::String_type:
 			if (Int32::TryParse(str_key, int_key)) {
 				switch (mode)
 				{
@@ -651,6 +669,9 @@ namespace lab6 {
 				case EditMode::HTable:
 					ht->Delete(int_key);
 					break;
+				case EditMode::HTableF1:
+					htf1->Delete(int_key);
+					break;
 				default:
 					break;
 				}
@@ -663,7 +684,7 @@ namespace lab6 {
 				warning_msg->Text = "incorrect key";
 			}
 			break;
-		case Type::Polynomial:
+		case Type::Polynomial_type:
 			if (Int32::TryParse(str_key, int_key)) {
 				switch (mode)
 				{
@@ -681,6 +702,9 @@ namespace lab6 {
 					break;
 				case EditMode::HTable:
 					pht->Delete(int_key);
+					break;
+				case EditMode::HTableF1:
+					phtf1->Delete(int_key);
 					break;
 				default:
 					break;
@@ -705,7 +729,7 @@ namespace lab6 {
 		
 		switch (type)
 		{
-		case Type::String:
+		case Type::String_type:
 			if (Int32::TryParse(str_key, int_key)) {
 				switch (mode)
 				{
@@ -724,6 +748,9 @@ namespace lab6 {
 				case EditMode::HTable:
 					ht->Insert(int_key, value);
 					break;
+				case EditMode::HTableF1:
+					htf1->Insert(int_key, value);
+					break;
 				default:
 					break;
 				}
@@ -736,7 +763,7 @@ namespace lab6 {
 				warning_msg->Text = "incorrect key";
 			}
 			break;
-		case Type::Polynomial:
+		case Type::Polynomial_type:
 			// Проверка на корректность ввода
 			if (Int32::TryParse(str_key, int_key)) {
 				String^ text_polynom = value_field->Text;
@@ -757,6 +784,9 @@ namespace lab6 {
 					break;
 				case EditMode::HTable:
 					pht->Insert(int_key, Polynomial(value));
+					break;
+				case EditMode::HTableF1:
+					phtf1->Insert(int_key, Polynomial(value));
 					break;
 				default:
 					break;
@@ -779,7 +809,7 @@ namespace lab6 {
 		tableView_listBox->Items->Clear();
 		switch (type)
 		{
-		case Type::String:
+		case Type::String_type:
 			switch (mode)
 			{
 			case EditMode::UTable:
@@ -809,11 +839,17 @@ namespace lab6 {
 					tableView_listBox->Items->Add(msclr::interop::marshal_as<String^>(ht->GetRec(i)));
 				}
 				break;
+			case EditMode::HTableF1:
+				for (int i = 0; i < htf1->GetCapacity(); i++)
+				{
+					tableView_listBox->Items->Add(msclr::interop::marshal_as<String^>(htf1->GetRec(i)));
+				}
+				break;
 			default:
 				break;
 			}
 			break;
-		case Type::Polynomial:
+		case Type::Polynomial_type:
 			switch (mode)
 			{
 			case EditMode::UTable:
@@ -841,6 +877,12 @@ namespace lab6 {
 				for (int i = 0; i < pht->GetCapacity(); i++)
 				{
 					tableView_listBox->Items->Add(msclr::interop::marshal_as<String^>(pht->GetRec(i)));
+				}
+				break;
+			case EditMode::HTableF1:
+				for (int i = 0; i < phtf1->GetCapacity(); i++)
+				{
+					tableView_listBox->Items->Add(msclr::interop::marshal_as<String^>(phtf1->GetRec(i)));
 				}
 				break;
 			default:
@@ -885,9 +927,12 @@ namespace lab6 {
 		case EditMode::HTable:
 			pht->Calculate(*p);
 			break;
+		case EditMode::HTableF1:
+			phtf1->Calculate(*p);
+			break;
 		default:
 			break;
 		}
 	}
-	};
+};
 }

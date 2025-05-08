@@ -1,4 +1,11 @@
 ﻿#pragma once
+
+#include "Polynomial.h"
+#include <string>
+
+using namespace std;
+using namespace Polynomial_;
+
 template<typename TKey, typename TValue>
 class HashTable
 {

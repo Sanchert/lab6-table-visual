@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClInclude Include="AVLTree.h" />
     <ClInclude Include="HashTable.h" />
+    <ClInclude Include="HashTableF1.h" />
     <ClInclude Include="Iterator.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="MyForm.h">
